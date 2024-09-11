@@ -2,8 +2,8 @@
 #
 # You can also run multiple in sequence, e.g. `make clean lint test serve-coverage-report`
 
-build:
-	bash run.sh build
+# build:
+# 	bash run.sh build
 
 clean:
 	bash run.sh clean
@@ -14,35 +14,38 @@ help:
 install:
 	bash run.sh install
 
-lint:
-	bash run.sh lint
+generate-project:
+	bash run.sh generate-project
 
-lint-ci:
-	bash run.sh lint:ci
+# lint:
+# 	bash run.sh lint
 
-publish-prod:
-	bash run.sh publish:prod
+# lint-ci:
+# 	bash run.sh lint:ci
 
-publish-test:
-	bash run.sh publish:test
+# publish-prod:
+# 	bash run.sh publish:prod
 
-release-prod:
-	bash run.sh release:prod
+# publish-test:
+# 	bash run.sh publish:test
 
-release-test:
-	bash run.sh release:test
+# release-prod:
+# 	bash run.sh release:prod
 
-serve-coverage-report:
-	bash run.sh serve-coverage-report
+# release-test:
+# 	bash run.sh release:test
 
-test-ci:
-	bash run.sh test:ci
+# serve-coverage-report:
+# 	bash run.sh serve-coverage-report
 
-test-quick:
-	bash run.sh test:quick
+# test-ci:
+# 	bash run.sh test:ci
 
-test:
-	bash run.sh run-tests
+# test-quick:
+# 	bash run.sh test:quick
 
-test-wheel-locally:
-	bash run.sh test:wheel-locally
+# test:
+# 	bash run.sh run-tests
+
+# test-wheel-locally:
+# 	bash run.sh test:wheel-locally
