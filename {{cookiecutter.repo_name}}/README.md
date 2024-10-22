@@ -1,24 +1,31 @@
-# python-course-package
+# {{cookiecutter.package_name}}
+You generated this repo using `jay-repogen`.
 
-## Quick start
+## Quick Start
 
+Clone the repo in your terminal:
 ```bash
-pip install python-course-package
+git clone git@github.com:shilongjaycui/{{cookiecutter.repo_name}}.git
 ```
 
-```python
-from example_pkg import ...
+Move into the repo folder:
+```bash
+cd {{cookiecutter.repo_name}}
 ```
 
-## Contributing
-
+Create and activate a virtual environment:
 ```bash
-# clone the repo
-git clone https://github.com/phitoduck/python-course-package.git
+python -m venv venv
+```
+```bash
+source venv/bin/activate
+```
 
-# install the dev dependencies
+Install dependencies:
+```bash
 make install
-
-# run the tests
-make test
 ```
+
+Now go play!
+## License
+[MIT](https://choosealicense.com/licenses/mit/)

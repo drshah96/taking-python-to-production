@@ -1,4 +1,4 @@
-"""Constants shared by the test suites."""
+"""Constants shared by the test suite."""
 
 from pathlib import Path
 
