@@ -1,0 +1,94 @@
+name: Lint, Build, and Test
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  check-version-txt:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Tag with the release version
+        run: |
+          git tag $(cat version.txt)
+
+  lint-format-and-static-code-checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v3
+        with:
+          python-version: 3.8
+      - name: Install pre-commit
+        run: |
+          pip install pre-commit
+      - name: Lint, Format, and other static code quality checks
+        run: |
+          /bin/bash -x setup.sh lint:ci
+
+  build-wheel-and-sdist:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v3
+        with:
+          python-version: 3.8
+      - name: Install build CLI
+        run: |
+          pip install build
+      - name: Build python package
+        run: |
+          /bin/bash -x setup.sh build
+      - name: Upload wheel and sdist
+        uses: actions/upload-artifact@v3
+        with:
+          name: wheel-and-sdist
+          path: ./dist/*
+
+  execute-tests:
+    needs:
+      - build-wheel-and-sdist
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v3
+        with:
+          python-version: 3.8
+      - name: Download wheel and sdist
+        uses: actions/download-artifact@v3
+        with:
+          name: wheel-and-sdist
+          path: ./dist/
+      - name: Install test dependencies
+        run: |
+          pip install pytest pytest-cov ./dist/*.whl
+      - name: Lint, Format, and other static code quality checks
+        run: |
+          /bin/bash -x setup.sh test:ci
+
+  publish:
+    needs:
+      - execute-tests
+      - build-wheel-and-sdist
+      - lint-format-and-static-code-checks
+      - check-version-txt
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v3
+      - name: Push tags
+        run: |
+          git tag $(cat version.txt)
+          git push origin --tags
